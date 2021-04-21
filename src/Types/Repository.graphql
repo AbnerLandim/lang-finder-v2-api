@@ -1,0 +1,16 @@
+type Query {
+  getRepositories(input: LanguageQuery!): [Repository]!
+}
+
+input LanguageQuery {
+  language: String!
+  perPage: Int!
+}
+
+type Repository {
+  fullName: String
+  description: String
+  url: String
+  avatarUrl: String
+  starsCount: Int
+}
