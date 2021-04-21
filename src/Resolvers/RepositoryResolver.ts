@@ -12,13 +12,11 @@ const RepositoryResolver: IResolvers = {
       args: { input: LanguageQuery },
       info: GraphQLResolveInfo
     ): Promise<Repository[] | any[]> {
-      const { language, perPage } = args.input;
+      const { language, page, perPage } = args.input;
 
-      console.log(language);
-      console.log(perPage);
       try {
         const response = await api.get(
-          `/repositories?q=language:${language}&order=desc&sort=star&per_page=${perPage}`
+          `/repositories?q=language:${language}&order=desc&sort=star&page=${page}&per_page=${perPage}`
         );
 
         const { data } = response;

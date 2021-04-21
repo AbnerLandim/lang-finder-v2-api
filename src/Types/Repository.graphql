@@ -4,6 +4,7 @@ type Query {
 
 input LanguageQuery {
   language: String!
+  page: Int!
   perPage: Int!
 }
 
