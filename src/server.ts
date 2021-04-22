@@ -7,7 +7,7 @@ import cors from "cors";
 import schema from "./schema";
 
 const app = express();
-const PORT = 5000;
+const PORT: string | number = process.env.PORT || 5000;
 const server = new ApolloServer({
   schema,
   validationRules: [depthLimit(7)],
