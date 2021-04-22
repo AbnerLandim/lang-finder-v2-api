@@ -10,4 +10,4 @@
 
 ##### Run the server
 
-`npm start`
+`npm run serve`
