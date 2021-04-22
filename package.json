@@ -2,10 +2,14 @@
   "name": "lang-finder-v2-api",
   "version": "1.0.0",
   "description": "Lang Finder API",
-  "main": "src/server.js",
+  "main": "dist/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node 'dist/server.js'",
+    "build-ts": "tsc",
+    "watch-ts": "tsc -w",
+    "postinstall": "npm run build-ts",
+    "start": "npm run serve",
+    "serve": "node 'dist/server.js'",
     "build": "tsc -p . && ncp src/Types dist/Types",
     "start:dev": "npm run build:dev",
     "build:dev": "nodemon 'src/server.ts' --exec 'ts-node' src/server.ts -e ts,graphql"
