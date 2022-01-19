@@ -1,4 +1,3 @@
-import { GraphQLResolveInfo } from 'graphql'
 import { IResolvers } from 'graphql-tools'
 import LanguageQuery from '../Interfaces/LanguageQuery'
 import Repository from '../Interfaces/Repository'
@@ -9,9 +8,8 @@ const RepositoryResolver: IResolvers = {
   Query: {
     async getRepositories(
       _: void,
-      args: { input: LanguageQuery },
-      info: GraphQLResolveInfo
-    ): Promise<Repository[] | any[]> {
+      args: { input: LanguageQuery }
+    ): Promise<Repository | Repository[]> {
       const { language, page, perPage } = args.input
 
       try {

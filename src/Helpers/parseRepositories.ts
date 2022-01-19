@@ -1,12 +1,14 @@
-const parseRepositories = (data: any) => {
+import Repository from '../Interfaces/Repository'
+
+const parseRepositories = (data: any): Repository | Repository[] => {
   if (data !== {}) {
     const parsedData = data?.items?.map((item: any) => {
       return {
-        fullName: item?.full_name ?? '--',
-        description: item?.description ?? '--',
-        url: item?.html_url ?? '--',
-        avatarUrl: item?.owner?.avatar_url ?? '--',
-        starsCount: item?.stargazers_count ?? 0,
+        fullName: item?.full_name || '--',
+        description: item?.description || '--',
+        url: item?.html_url || '--',
+        avatarUrl: item?.owner?.avatar_url || '--',
+        starsCount: item?.stargazers_count || 0,
       }
     })
 
