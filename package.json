@@ -5,14 +5,14 @@
   "main": "dist/server.js",
   "scripts": {
     "test": "npx mocha -w dist/Test/*.test.js",
-    "t": "npm run test",
+    "t": "yarn run test",
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
-    "postinstall": "npm run build-ts",
-    "start": "npm run serve",
+    "postinstall": "yarn run build-ts",
+    "start": "yarn run serve",
     "serve": "node 'dist/server.js'",
     "build": "tsc -p . && ncp src/Types dist/Types",
-    "start:dev": "npm run build:dev",
+    "start:dev": "yarn run build:dev",
     "build:dev": "nodemon 'src/server.ts' --exec 'ts-node' src/server.ts -e ts,graphql"
   },
   "keywords": [],

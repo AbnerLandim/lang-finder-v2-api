@@ -1,12 +1,16 @@
-import { describe, it } from 'mocha'
+import { describe, it, beforeEach } from 'mocha'
 import assert from 'assert'
 import { makeExecutableSchema } from 'graphql-tools'
 import { addMocksToSchema } from '@graphql-tools/mock'
-import { graphql } from 'graphql'
+import { graphql, GraphQLSchema } from 'graphql'
+import { ApolloServer } from 'apollo-server-express'
 
-import Repository from '../Interfaces/Repository'
+import IRepository from '../Interfaces/Repository'
+import RRepository from '../Resolvers/RepositoryResolver'
 
-describe('Repositoy tests', () => {
+describe('Repository tests', () => {
+  let schemaWithMocks: GraphQLSchema
+  let schema: GraphQLSchema
   const typeDefs = `
         type Query {
           getRepositories(input: LanguageQuery!): [Repository]!
@@ -26,11 +30,18 @@ describe('Repositoy tests', () => {
           starsCount: Int
         }      
       `
-  const schema = makeExecutableSchema({ typeDefs })
-  const schemaWithMocks = addMocksToSchema({ schema })
+  const resolvers = { ...RRepository }
 
-  describe('search for Mock data', () => {
-    it('should return an array of Mock repositories', async () => {
+  const instanceOfRepo = (object: any): object is IRepository =>
+    'fullName' in object
+
+  beforeEach(() => {
+    schema = makeExecutableSchema({ typeDefs })
+    schemaWithMocks = addMocksToSchema({ schema })
+  })
+
+  describe('searching for JS repositories', () => {
+    it('should return an array of JS repositories', async () => {
       const query = `
         {
           getRepositories(input: { language: "js", page: 1, perPage: 5 }) {
@@ -45,10 +56,35 @@ describe('Repositoy tests', () => {
       const result = await graphql(schemaWithMocks, query)
       if (result) {
         // console.log('Got result ->', result?.data?.getRepositories)
+        assert.ok(
+          result?.data?.getRepositories.every((repo: any) =>
+            instanceOfRepo(repo)
+          )
+        )
+      } else assert.fail()
+    })
+  })
 
-        const instanceOfRepo = (object: any): object is Repository =>
-          'fullName' in object
+  describe('setting up server and searching', () => {
+    it('should return repositories', async () => {
+      const query = `
+      {
+        getRepositories(input: { language: "js", page: 1, perPage: 5 }) {
+          fullName
+          description
+          url
+          avatarUrl
+          starsCount
+        }
+      }
+    `
+      const testServer = new ApolloServer({ typeDefs, resolvers })
+      const result = await testServer.executeOperation({
+        query,
+      })
 
+      if (result) {
+        assert.ok(result.errors === undefined)
         assert.ok(
           result?.data?.getRepositories.every((repo: any) =>
             instanceOfRepo(repo)
