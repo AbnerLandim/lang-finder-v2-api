@@ -2,12 +2,12 @@
 
 ##### Install packages
 
-`npm install`
+`yarn`
 
 ##### Build js files
 
-`npm run build`
+`yarn build`
 
 ##### Run the server
 
-`npm run serve`
+`yarn serve`
